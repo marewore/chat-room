@@ -1,5 +1,6 @@
 import socket
 import threading
+import sys
 
 HEADER = 2048
 
@@ -25,12 +26,16 @@ if __name__ == "__main__":
         thread = threading.Thread(target=receive_messages, args=(client,))
         thread.start()
 
+        print("* Connected to the server")
+
         while True:
-            msg = input()
+            msg = input().encode("utf-8")
+
             if msg == "!disconnect":
-                client.send(msg.encode("utf-8"))
+                client.send(msg)
                 break
-            client.send(msg.encode("utf-8"))
+            
+            client.send(msg)
 
     except:
         print("Connection failure")
